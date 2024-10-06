@@ -1,0 +1,198 @@
+include "target.tmh"
+include "usb_keyboard.tmh"
+include "FalconBMS.tmh"
+
+int InitLeftMFD()
+{
+    //
+    // Left MFD
+    //
+
+    MapKey(&LMFD, OSB01, LMFD_OSB01, ALL_LAYERS);
+    MapKey(&LMFD, OSB02, LMFD_OSB02, ALL_LAYERS);
+    MapKey(&LMFD, OSB03, LMFD_OSB03, ALL_LAYERS);
+    MapKey(&LMFD, OSB04, LMFD_OSB04, ALL_LAYERS);
+    MapKey(&LMFD, OSB05, LMFD_OSB05, ALL_LAYERS);
+    MapKey(&LMFD, OSB06, LMFD_OSB06, ALL_LAYERS);
+    MapKey(&LMFD, OSB07, LMFD_OSB07, ALL_LAYERS);
+    MapKey(&LMFD, OSB08, LMFD_OSB08, ALL_LAYERS);
+    MapKey(&LMFD, OSB09, LMFD_OSB09, ALL_LAYERS);
+    MapKey(&LMFD, OSB10, LMFD_OSB10, ALL_LAYERS);
+    MapKey(&LMFD, OSB11, LMFD_OSB11, ALL_LAYERS);
+    MapKey(&LMFD, OSB12, LMFD_OSB12, ALL_LAYERS);
+    MapKey(&LMFD, OSB13, LMFD_OSB13, ALL_LAYERS);
+    MapKey(&LMFD, OSB14, LMFD_OSB14, ALL_LAYERS);
+    MapKey(&LMFD, OSB15, LMFD_OSB15, ALL_LAYERS);
+    MapKey(&LMFD, OSB16, LMFD_OSB16, ALL_LAYERS);
+    MapKey(&LMFD, OSB17, LMFD_OSB17, ALL_LAYERS);
+    MapKey(&LMFD, OSB18, LMFD_OSB18, ALL_LAYERS);
+    MapKey(&LMFD, OSB19, LMFD_OSB19, ALL_LAYERS);
+    MapKey(&LMFD, OSB20, LMFD_OSB20, ALL_LAYERS);
+    MapKey(&LMFD, BRTU, LMFD_BRT_INC, ALL_LAYERS);
+    MapKey(&LMFD, BRTD, LMFD_BRT_DEC, ALL_LAYERS);
+    MapKey(&LMFD, GAINU, LMFD_GAIN_INC, ALL_LAYERS);
+    MapKey(&LMFD, GAIND, LMFD_GAIN_DEC, ALL_LAYERS);
+
+    // Unused buttons.
+    // MapKey(&LMFD, SYMU, LMFD_SYM_INC, ALL_LAYERS);
+    // MapKey(&LMFD, SYMD, LMFD_SYM_DEC, ALL_LAYERS);
+    // MapKey(&LMFD, CONU, LMFD_CON_INC, ALL_LAYERS);
+    // MapKey(&LMFD, COND, LMFD_CON_DEC, ALL_LAYERS);
+
+    return 0;
+}
+
+int InitRightMFD()
+{
+    //
+    // Right MFD
+    //
+
+    MapKey(&RMFD, OSB01, RMFD_OSB01, ALL_LAYERS);
+    MapKey(&RMFD, OSB02, RMFD_OSB02, ALL_LAYERS);
+    MapKey(&RMFD, OSB03, RMFD_OSB03, ALL_LAYERS);
+    MapKey(&RMFD, OSB04, RMFD_OSB04, ALL_LAYERS);
+    MapKey(&RMFD, OSB05, RMFD_OSB05, ALL_LAYERS);
+    MapKey(&RMFD, OSB06, RMFD_OSB06, ALL_LAYERS);
+    MapKey(&RMFD, OSB07, RMFD_OSB07, ALL_LAYERS);
+    MapKey(&RMFD, OSB08, RMFD_OSB08, ALL_LAYERS);
+    MapKey(&RMFD, OSB09, RMFD_OSB09, ALL_LAYERS);
+    MapKey(&RMFD, OSB10, RMFD_OSB10, ALL_LAYERS);
+    MapKey(&RMFD, OSB11, RMFD_OSB11, ALL_LAYERS);
+    MapKey(&RMFD, OSB12, RMFD_OSB12, ALL_LAYERS);
+    MapKey(&RMFD, OSB13, RMFD_OSB13, ALL_LAYERS);
+    MapKey(&RMFD, OSB14, RMFD_OSB14, ALL_LAYERS);
+    MapKey(&RMFD, OSB15, RMFD_OSB15, ALL_LAYERS);
+    MapKey(&RMFD, OSB16, RMFD_OSB16, ALL_LAYERS);
+    MapKey(&RMFD, OSB17, RMFD_OSB17, ALL_LAYERS);
+    MapKey(&RMFD, OSB18, RMFD_OSB18, ALL_LAYERS);
+    MapKey(&RMFD, OSB19, RMFD_OSB19, ALL_LAYERS);
+    MapKey(&RMFD, OSB20, RMFD_OSB20, ALL_LAYERS);
+    MapKey(&RMFD, BRTU, RMFD_BRT_INC, ALL_LAYERS);
+    MapKey(&RMFD, BRTD, RMFD_BRT_DEC, ALL_LAYERS);
+
+    // Unused buttons.
+    // MapKey(&RMFD, GAINU, RMFD_GAIN_INC, ALL_LAYERS);
+    // MapKey(&RMFD, GAIND, RMFD_GAIN_DEC, ALL_LAYERS);
+    // MapKey(&RMFD, SYMU, RMFD_SYM_INC, ALL_LAYERS);
+    // MapKey(&RMFD, SYMD, RMFD_SYM_DEC, ALL_LAYERS);
+    // MapKey(&RMFD, CONU, RMFD_CON_INC, ALL_LAYERS);
+    // MapKey(&RMFD, COND, RMFD_CON_DEC, ALL_LAYERS);
+
+    return 0;
+}
+
+int InitViperTQS()
+{
+    //
+    // Viper TQS
+    //
+
+    MapAxis(&ViperTQS, VQ1_AXIS, DX_XROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VQ1_AXIS, 0, 0, 0, 0, 0);
+
+    MapAxis(&ViperTQS, VQ2_AXIS, DX_YROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VQ2_AXIS, 0, 0, 0, 0, 0);
+
+    MapAxis(&ViperTQS, VQ3_AXIS, DX_Z_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VQ3_AXIS, 0, 0, 0, 0, 0);
+
+    MapAxis(&ViperTQS, VQ4_AXIS, DX_ZROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VQ4_AXIS, 0, 0, 0, 0, 0);
+
+    //MapAxis(&ViperTQS, VQ5_AXIS, DX_Z_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    MapAxis(&ViperTQS, VQ5_AXIS, DX_THROTTLE_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VQ5_AXIS, 0, 0, 0, 0, 0);
+
+    MapAxis(&ViperTQS, VB1_AXIS, DX_SLIDER_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&ViperTQS, VB1_AXIS, 0, 0, 0, 0, 0);
+
+    MapKey(&ViperTQS, TQS_EMERG_JETTISON, EMERG_JETTISON, ALL_LAYERS);
+    //MapKey(&ViperTQS, TQS_GEAR_UP, GEAR_UP, ALL_LAYERS);
+    //MapKey(&ViperTQS, TQS_GEAR_DOWN, GEAR_DOWN, ALL_LAYERS);
+
+    return 0;
+}
+
+int InitJoystick()
+{
+    //
+    // Joystick
+    //
+
+    MapAxis(&Joystick, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&Joystick, JOYY, 0, 0, 0, 0, 0);
+
+    MapAxis(&Joystick, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    SetSCurve(&Joystick, JOYX, 0, 0, 0, 0, 0);
+
+    MapKey(&Joystick, STICK_PICKLE, F4BMS_PICKLE, ALL_LAYERS);
+    MapKey(&Joystick, STICK_PADDLE, F4BMS_PADDLE, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TRIGGER_1, F4BMS_TRIGGER_1, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
+
+    MapKey(&Joystick, STICK_TMS_UP, F4BMS_TMS_UP, ALL_LAYERS);
+    MapKey(&Joystick, STICK_TMS_DOWN, F4BMS_TMS_DOWN, ALL_LAYERS);
+    MapKey(&Joystick, STICK_TMS_LEFT, F4BMS_TMS_LEFT, ALL_LAYERS);
+    MapKey(&Joystick, STICK_TMS_RIGHT, F4BMS_TMS_RIGHT, ALL_LAYERS);
+
+    MapKey(&Joystick, STICK_CMS_UP, F4BMS_CMS_UP, ALL_LAYERS);
+    MapKey(&Joystick, STICK_CMS_DOWN, F4BMS_CMS_DOWN, ALL_LAYERS);
+    MapKey(&Joystick, STICK_CMS_LEFT, F4BMS_CMS_LEFT, ALL_LAYERS);
+    MapKey(&Joystick, STICK_CMS_RIGHT, F4BMS_CMS_RIGHT, ALL_LAYERS);
+
+    MapKey(&Joystick, STICK_DMS_UP, F4BMS_DMS_UP, ALL_LAYERS);
+    MapKey(&Joystick, STICK_DMS_DOWN, F4BMS_DMS_DOWN, ALL_LAYERS);
+    MapKey(&Joystick, STICK_DMS_LEFT, F4BMS_DMS_LEFT, ALL_LAYERS);
+    MapKey(&Joystick, STICK_DMS_RIGHT, F4BMS_DMS_RIGHT, ALL_LAYERS);
+
+    MapKey(&Joystick, STICK_HAT_UP, F4BMS_HAT_UP, ALL_LAYERS);
+    MapKey(&Joystick, STICK_HAT_DOWN, F4BMS_HAT_DOWN, ALL_LAYERS);
+    MapKey(&Joystick, STICK_HAT_LEFT, F4BMS_HAT_LEFT, ALL_LAYERS);
+    MapKey(&Joystick, STICK_HAT_RIGHT, F4BMS_HAT_RIGHT, ALL_LAYERS);
+
+    return 0;
+}
+
+int main()
+{
+    Configure(&HCougar, MODE_EXCLUDED);
+    Configure(&JoystickF18, MODE_EXCLUDED);
+    Configure(&Throttle, MODE_EXCLUDED);
+    Configure(&A320Pilot, MODE_EXCLUDED);
+    Configure(&A320Copilot, MODE_EXCLUDED);
+    Configure(&TCAQuadrant12, MODE_EXCLUDED);
+    Configure(&TCAQuadrant34, MODE_EXCLUDED);
+    Configure(&TCAYokeBoeing, MODE_EXCLUDED);
+    Configure(&TCAQBoeing12, MODE_EXCLUDED);
+    Configure(&TCAQBoeing34, MODE_EXCLUDED);
+    Configure(&TCASidestickXPilot, MODE_EXCLUDED);
+    Configure(&TCASidestickXCopilot, MODE_EXCLUDED);
+    //Configure(&ViperBBox, MODE_EXCLUDED);
+    Configure(&T16000, MODE_EXCLUDED);
+    Configure(&T16000L, MODE_EXCLUDED);
+    Configure(&TFRPRudder, MODE_EXCLUDED);
+    Configure(&TWCSThrottle, MODE_EXCLUDED);
+    Configure(&TFRPHARudder, MODE_EXCLUDED);
+
+    if (Init(&EventHandle)) {
+        return 1;
+    }
+
+    SetKBRate(32, 50);
+    SetKBLayout(KB_ENG);
+    SetShiftButton(0, 0, 0, 0, 0, 0);
+
+    InitLeftMFD();
+    InitRightMFD();
+    InitViperTQS();
+    InitJoystick();
+
+}
+
+int EventHandle(int type, alias o, int x)
+{
+    DefaultMapping(&o, x);
+}
+
+// vim:set ts=8 sw=4 sts=4 tw=80 expandtab syntax=c                            :
