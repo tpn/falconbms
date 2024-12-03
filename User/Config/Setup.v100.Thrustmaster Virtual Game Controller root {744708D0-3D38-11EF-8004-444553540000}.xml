@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <JoyAssgn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <detentPosition>
-    <AB>65536</AB>
+    <AB>48608</AB>
     <IDLE>0</IDLE>
   </detentPosition>
   <axis>
@@ -20,36 +20,36 @@
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName />
-      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
+      <AxisName>Cursor_X</AxisName>
+      <AssgnDate>2024-11-29T18:13:59.595523-08:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName />
-      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
+      <AxisName>Range_Knob</AxisName>
+      <AssgnDate>2024-11-29T18:14:02.3952095-08:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName />
-      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
+      <AxisName>Radar_Antenna_Elevation</AxisName>
+      <AssgnDate>2024-11-29T18:13:43.3216662-08:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName />
-      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
+      <AxisName>Cursor_Y</AxisName>
+      <AssgnDate>2024-11-29T18:13:55.8525581-08:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName />
-      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
+      <AxisName>Throttle</AxisName>
+      <AssgnDate>2024-11-29T18:13:35.3705513-08:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
