@@ -1,6 +1,6 @@
 include "target.tmh"
-include "usb_keyboard.tmh"
-include "FalconBMS.tmh"
+include "usb_keyboard.ttm"
+include "FalconBMS.ttm"
 
 int InitLeftMFD()
 {
@@ -128,8 +128,10 @@ int InitJoystick()
 
     MapKey(&Joystick, STICK_PICKLE, F4BMS_PICKLE, ALL_LAYERS);
     MapKey(&Joystick, STICK_PADDLE, F4BMS_PADDLE, ALL_LAYERS);
+    MapKey(&Joystick, STICK_PINKY, F4BMS_PINKY, ALL_LAYERS);
     //MapKey(&Joystick, STICK_TRIGGER_1, F4BMS_TRIGGER_1, ALL_LAYERS);
-    //MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
+    MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
+    MapKey(&Joystick, STICK_MASTER_MODE, F4BMS_MASTER_MODE, ALL_LAYERS);
 
     MapKey(&Joystick, STICK_TMS_UP, F4BMS_TMS_UP, ALL_LAYERS);
     MapKey(&Joystick, STICK_TMS_DOWN, F4BMS_TMS_DOWN, ALL_LAYERS);
