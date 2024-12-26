@@ -166,4 +166,39 @@ define TQS_STORES_CONFIG_CAT3 QB_BTN38
 
 define TQS_AXIS VB_AXIS
 
+//
+// LEDs
+//
+
+define LED_GEAR_NOSE         1
+define LED_GEAR_LEFT         2
+define LED_GEAR_RIGHT        3
+define LED_GEAR_WARNING      19
+define LED_RWR_SEARCH        14
+define LED_RWR_A_POWER       15
+define LED_RWR_LOW_ALT_RED   16
+define LED_RWR_LOW_ALT_GREEN 17
+define LED_RWR_SYSTEM_POWER  18
+
+define LED_USER_LEFT_1 12
+define LED_USER_LEFT_2 10
+define LED_USER_LEFT_3 8
+define LED_USER_LEFT_4 6
+define LED_USER_LEFT_5 4
+
+define LED_USER_RIGHT_1 13
+define LED_USER_RIGHT_2 11
+define LED_USER_RIGHT_3 9
+define LED_USER_RIGHT_4 7
+define LED_USER_RIGHT_5 5
+
+// MFD Definitions (not integrated into ViperTQS LED Code)
+define LED_LMFD_1 1
+define LED_LMFD_2 2
+define LED_RMFD_1 1
+define LED_RMFD_2 2
+
+define LED_STATE_OFF 0
+define LED_STATE_ON  1
+
 // vim:set ts=8 sw=4 sts=4 tw=80 expandtab syntax=c                            :

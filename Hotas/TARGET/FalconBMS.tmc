@@ -2,6 +2,187 @@ include "target.tmh"
 include "usb_keyboard.ttm"
 include "FalconBMS.ttm"
 
+int FlashLED = 0;
+
+int SetLED(alias dev, int led_index, int value)
+{
+    int i;
+
+    if (value == 2)
+    {
+        // flash led
+        if ((led_index == LED_RWR_SEARCH) & (FlashLED == 0))
+        {
+            FlashLED = 1;
+            StartLEDFlashLoop();
+        }
+    }
+    else
+    {
+        if ((led_index == LED_RWR_SEARCH) & (FlashLED == 1))
+        {
+            FlashLED = 0;
+        }
+
+        // turn led on or off
+
+        // LEDV commands need to be sent multiple times to be certain they are executed on the device
+        i = 0; while (i<3)
+        {
+            ActKey(PULSE+KEYON+LEDV( &dev, led_index, value ));
+            i = i+1;
+        }
+    }
+}
+
+int ResetLEDs()
+{
+    SetLED(&ViperTQS, LED_GEAR_NOSE,         LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_GEAR_LEFT,         LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_GEAR_RIGHT,        LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_GEAR_WARNING,      LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_RWR_SEARCH,        LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_RWR_A_POWER,       LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_RWR_LOW_ALT_GREEN, LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_RWR_LOW_ALT_RED,   LED_STATE_OFF);
+    SetLED(&ViperTQS, LED_RWR_SYSTEM_POWER,  LED_STATE_OFF);
+}
+
+int SetLEDStatus
+(
+    byte gear_nose_status,
+    byte gear_left_status,
+    byte gear_right_status,
+    byte gear_warning_status,
+    byte rwr_search_status,
+    byte rwr_activity_status,
+    byte rwr_a_power_status,
+    byte rwr_alt_low_status,
+    byte rwr_alt_status,
+    byte rwr_system_power_status,
+    byte speed_brake_position
+)
+{
+    SetLED(&ViperTQS, LED_GEAR_NOSE,         gear_nose_status);
+    SetLED(&ViperTQS, LED_GEAR_LEFT,         gear_left_status);
+    SetLED(&ViperTQS, LED_GEAR_RIGHT,        gear_right_status);
+    SetLED(&ViperTQS, LED_GEAR_WARNING,      gear_warning_status);
+
+    SetLED(&ViperTQS, LED_RWR_SEARCH,        rwr_search_status);
+    SetLED(&ViperTQS, LED_RWR_A_POWER,       rwr_activity_status);
+
+    // Thrustmaster limitation for ACT/PWR indication - only one LED.
+    // Power should be lit when rwr_system_power_status is on and A
+    // should be light amber when rwr_activity_status is on.
+    // One compromise would be to light the LED when rwr_system_power_status
+    // is on and flash the LED if rwr_system_power_status is on and
+    // rwr_activity_status is also on.
+    // SetLED(&ViperTQS, LED_RWR_A_POWER,       rwr_a_power_status);
+
+    if (rwr_alt_low_status == 1) {
+        SetLED(&ViperTQS, LED_RWR_LOW_ALT_GREEN, LED_STATE_OFF);
+        SetLED(&ViperTQS, LED_RWR_LOW_ALT_RED,   rwr_alt_low_status);
+    } else {
+        SetLED(&ViperTQS, LED_RWR_LOW_ALT_RED,   LED_STATE_OFF);
+        SetLED(&ViperTQS, LED_RWR_LOW_ALT_GREEN, rwr_alt_status);
+    }
+
+    SetLED(&ViperTQS, LED_RWR_SYSTEM_POWER,  rwr_system_power_status);
+
+    // Speed brake position indication
+    SetLED(&ViperTQS, LED_USER_LEFT_1, (speed_brake_position >= 1));
+    SetLED(&ViperTQS, LED_USER_RIGHT_1, (speed_brake_position >= 1));
+    SetLED(&ViperTQS, LED_USER_LEFT_2, (speed_brake_position >= 2));
+    SetLED(&ViperTQS, LED_USER_RIGHT_2, (speed_brake_position >= 2));
+    SetLED(&ViperTQS, LED_USER_LEFT_3, (speed_brake_position >= 3));
+    SetLED(&ViperTQS, LED_USER_RIGHT_3, (speed_brake_position >= 3));
+    SetLED(&ViperTQS, LED_USER_LEFT_4, (speed_brake_position >= 4));
+    SetLED(&ViperTQS, LED_USER_RIGHT_4, (speed_brake_position >= 4));
+    SetLED(&ViperTQS, LED_USER_LEFT_5, (speed_brake_position >= 5));
+    SetLED(&ViperTQS, LED_USER_RIGHT_5, (speed_brake_position >= 5));
+}
+
+define FLASH_INTERVAL 250
+
+int RwrSearchLEDNextState;
+
+int HandleFlashCycle(int cycle_num)
+{
+    int i;
+
+    if (FlashLED == 1)
+    {
+        // LEDV commands need to be sent multiple times to be certain they are executed on the device
+        i = 0; while (i<3)
+        {
+            ActKey(PULSE+KEYON+LEDV(&ViperTQS, LED_RWR_SEARCH, RwrSearchLEDNextState));
+            i = i+1;
+        }
+
+        // set next state of flashing led
+        if (RwrSearchLEDNextState == LED_STATE_ON) {
+            RwrSearchLEDNextState = LED_STATE_OFF;
+        } else {
+            RwrSearchLEDNextState = LED_STATE_ON;
+        }
+
+        // NEXT CYCLE LOOP
+        DeferCall(FLASH_INTERVAL, &HandleFlashCycle, cycle_num + 1);
+    }
+}
+
+int StartLEDFlashLoop()
+{
+    // FIRST CALL .. ON SOME EVENT
+    RwrSearchLEDNextState = LED_STATE_OFF;
+    HandleFlashCycle(0);
+}
+
+
+int TCPCallback(int buf, int size)
+{
+    int i;
+
+    char packet;
+    Map(&packet, buf); Dim(&packet, size);
+
+    char packet_string;
+    Map(&packet_string, buf); Dim(&packet_string, size+1);
+    packet_string[size] = 0; // null terminate so can be printed
+    printf("%s : %d bytes received\xa", &packet_string, size);
+
+    if (size == 0) {
+        return 0;
+    }
+
+    if (packet[0] == 'q') {
+        // simulation exit
+        ResetLEDs();
+    }
+    else if (packet[0] == 'r') {
+        ResetLEDs();
+    } else if (packet[0] == 'm') {
+        // read the aircraft type
+
+        // TODO for future expansion of other aircraft and throttle controllers
+    }
+    else if (packet[0] == 'u') // update status of lamps
+    {
+        SetLEDStatus( packet[1]  - '0',
+                      packet[2]  - '0',
+                      packet[3]  - '0',
+                      packet[4]  - '0',
+                      packet[5]  - '0',
+                      packet[6]  - '0',
+                      packet[7]  - '0',
+                      packet[8]  - '0',
+                      packet[9]  - '0',
+                      packet[10] - '0',
+                      packet[11] - '0' );
+    }
+}
+
+
 int InitLeftMFD()
 {
     //
@@ -107,9 +288,39 @@ int InitViperTQS()
     MapAxis(&ViperTQS, VB1_AXIS, DX_SLIDER_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
     SetSCurve(&ViperTQS, VB1_AXIS, 0, 0, 0, 0, 0);
 
-    MapKey(&ViperTQS, TQS_EMERG_JETTISON, EMERG_JETTISON, ALL_LAYERS);
+    //MapKey(&ViperTQS, TQS_EMERG_JETTISON, EMERG_JETTISON, ALL_LAYERS);
     //MapKey(&ViperTQS, TQS_GEAR_UP, GEAR_UP, ALL_LAYERS);
     //MapKey(&ViperTQS, TQS_GEAR_DOWN, GEAR_DOWN, ALL_LAYERS);
+
+    // Curves for JOYY (pitch)
+    // Set a desensitized scale for Precision gains
+    // Normal: SetSCurve(&ViperTQS, JOYY, 0, 1, 0, 0, 0);
+    // Precision: SetSCurve(&ViperTQS, JOYY, 0, 1, 0, 0, -4);
+    // Scale: 0 = 100%, -1 = 70.92%, -2 = 50.30% -3 = 35.67%, -4 = 25.30%, -5 = 17.94%
+
+    // Use ANT ELEV Button to toggle scales for JOYY Precision (/AAR Gains/Landing Gains/Normal Flight)
+    // Sets the Left MFD LED#2 (the top right LED Light) ON when AAR Gains are active,
+    // Sets the Right MFD LED#1 (The top left LED) ON when Landing Gains are active, and Turns OFF Left MFD LED#2
+    // Both LEDs OFF when Normal Flight Gains (Full Scale) are active
+    MapKey(
+        &ViperTQS,
+        Q_BTN11,
+        SEQ(
+            CHAIN(
+                EXEC("SetSCurve(&ViperTQS, JOYY, 0, 1, 0, 0, -2);"),
+                LED(&LMFD, LED_ONOFF, LED_CURRENT+LED2)
+            ),
+            CHAIN(
+                EXEC("SetSCurve(&ViperTQS, JOYY, 0, 1, 0, 0, -1);"),
+                LED(&LMFD, LED_ONOFF, LED_CURRENT-LED2),
+                LED(&RMFD, LED_ONOFF, LED_CURRENT+LED1)
+            ),
+                CHAIN(
+                EXEC("SetSCurve(&ViperTQS, JOYY, 0, 1, 0, -2, 0);"),
+                LED(&RMFD, LED_ONOFF, LED_CURRENT-LED1)
+            )
+        )
+    );
 
     return 0;
 }
@@ -126,49 +337,59 @@ int InitJoystick()
     MapAxis(&Joystick, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
     SetSCurve(&Joystick, JOYX, 0, 0, 0, 0, 0);
 
-    MapKey(&Joystick, STICK_PICKLE, F4BMS_PICKLE, ALL_LAYERS);
-    MapKey(&Joystick, STICK_PADDLE, F4BMS_PADDLE, ALL_LAYERS);
-    MapKey(&Joystick, STICK_PINKY, F4BMS_PINKY, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_PICKLE, F4BMS_PICKLE, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_PADDLE, F4BMS_PADDLE, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_PINKY, F4BMS_PINKY, ALL_LAYERS);
     //MapKey(&Joystick, STICK_TRIGGER_1, F4BMS_TRIGGER_1, ALL_LAYERS);
     //MapKey(&Joystick, STICK_TRIGGER_2, PULSE+F4BMS_TRIGGER_2, ALL_LAYERS);
-    MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
     //MapKeyR(&Joystick, STICK_TRIGGER_2, UP+F4BMS_TRIGGER_2);
 
-	//MapKey(&Joystick, STICK_TRIGGER_2,
-	//    EXEC(
-     //   	"ActKey(KEYON+L_ALT+USB_SLASH);"   // Key press
-    //    	"while(Joystick[STICK_TRIGGER_2]) { DeferCall(10); }"
-    //    	"ActKey(KEYOFF+L_ALT+USB_SLASH);"  // Key release
-    //	)
+    //MapKey(&Joystick, STICK_TRIGGER_2,
+    //    EXEC(
+     //     "ActKey(KEYON+L_ALT+USB_SLASH);"   // Key press
+    //      "while(Joystick[STICK_TRIGGER_2]) { DeferCall(10); }"
+    //      "ActKey(KEYOFF+L_ALT+USB_SLASH);"  // Key release
+    //  )
     //);
-    
-    MapKey(&Joystick, STICK_MASTER_MODE, F4BMS_MASTER_MODE, ALL_LAYERS);
 
-    MapKey(&Joystick, STICK_TMS_UP, F4BMS_TMS_UP, ALL_LAYERS);
-    MapKey(&Joystick, STICK_TMS_DOWN, F4BMS_TMS_DOWN, ALL_LAYERS);
-    MapKey(&Joystick, STICK_TMS_LEFT, F4BMS_TMS_LEFT, ALL_LAYERS);
-    MapKey(&Joystick, STICK_TMS_RIGHT, F4BMS_TMS_RIGHT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_MASTER_MODE, F4BMS_MASTER_MODE, ALL_LAYERS);
 
-    MapKey(&Joystick, STICK_CMS_UP, F4BMS_CMS_UP, ALL_LAYERS);
-    MapKey(&Joystick, STICK_CMS_DOWN, F4BMS_CMS_DOWN, ALL_LAYERS);
-    MapKey(&Joystick, STICK_CMS_LEFT, F4BMS_CMS_LEFT, ALL_LAYERS);
-    MapKey(&Joystick, STICK_CMS_RIGHT, F4BMS_CMS_RIGHT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TMS_UP, F4BMS_TMS_UP, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TMS_DOWN, F4BMS_TMS_DOWN, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TMS_LEFT, F4BMS_TMS_LEFT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TMS_RIGHT, F4BMS_TMS_RIGHT, ALL_LAYERS);
 
-    MapKey(&Joystick, STICK_DMS_UP, F4BMS_DMS_UP, ALL_LAYERS);
-    MapKey(&Joystick, STICK_DMS_DOWN, F4BMS_DMS_DOWN, ALL_LAYERS);
-    MapKey(&Joystick, STICK_DMS_LEFT, F4BMS_DMS_LEFT, ALL_LAYERS);
-    MapKey(&Joystick, STICK_DMS_RIGHT, F4BMS_DMS_RIGHT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_CMS_UP, F4BMS_CMS_UP, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_CMS_DOWN, F4BMS_CMS_DOWN, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_CMS_LEFT, F4BMS_CMS_LEFT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_CMS_RIGHT, F4BMS_CMS_RIGHT, ALL_LAYERS);
 
-    MapKey(&Joystick, STICK_HAT_UP, F4BMS_HAT_UP, ALL_LAYERS);
-    MapKey(&Joystick, STICK_HAT_DOWN, F4BMS_HAT_DOWN, ALL_LAYERS);
-    MapKey(&Joystick, STICK_HAT_LEFT, F4BMS_HAT_LEFT, ALL_LAYERS);
-    MapKey(&Joystick, STICK_HAT_RIGHT, F4BMS_HAT_RIGHT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_DMS_UP, F4BMS_DMS_UP, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_DMS_DOWN, F4BMS_DMS_DOWN, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_DMS_LEFT, F4BMS_DMS_LEFT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_DMS_RIGHT, F4BMS_DMS_RIGHT, ALL_LAYERS);
+
+    //MapKey(&Joystick, STICK_HAT_UP, F4BMS_HAT_UP, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_HAT_DOWN, F4BMS_HAT_DOWN, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_HAT_LEFT, F4BMS_HAT_LEFT, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_HAT_RIGHT, F4BMS_HAT_RIGHT, ALL_LAYERS);
 
     return 0;
 }
 
+int InitLEDs()
+{
+    ActKey(PULSE+KEYON+LED(&LMFD, LED_ONOFF, LED_CURRENT-LED2)); //set Left MFD LED 2 OFF
+    ActKey(PULSE+KEYON+LED(&RMFD, LED_ONOFF, LED_CURRENT-LED1)); //set RMFD LED 1 OFF
+}
+
 int main()
 {
+    //
+    // Exclude unused devices.
+    //
+
     Configure(&HCougar, MODE_EXCLUDED);
     Configure(&JoystickF18, MODE_EXCLUDED);
     Configure(&Throttle, MODE_EXCLUDED);
@@ -186,15 +407,26 @@ int main()
     Configure(&TFRPRudder, MODE_EXCLUDED);
     Configure(&TWCSThrottle, MODE_EXCLUDED);
     Configure(&TFRPHARudder, MODE_EXCLUDED);
-    
-	Configure(&Joystick, MODE_KEEPENABLED);
-	Configure(&ViperBBox, MODE_KEEPENABLED);
-	//
-	//Configure(&ViperBBox, MODE_EXCLUDED);
+    Configure(&ViperBBox, MODE_EXCLUDED);
+
+    //
+    // Enable stick, TQS, and MFDs.
+    //
+
+    Configure(&Joystick, MODE_KEEPENABLED);
+    Configure(&ViperTQS, MODE_KEEPENABLED);
+    Configure(&LMFD, MODE_KEEPENABLED);
+    Configure(&RMFD, MODE_KEEPENABLED);
 
     if (Init(&EventHandle)) {
         return 1;
     }
+
+    //
+    // TCP callback for Falcon BMS.
+    //
+
+    RegisterGameCallback(2323, &TCPCallback);
 
     SetKBRate(32, 50);
     SetKBLayout(KB_ENG);
@@ -204,6 +436,9 @@ int main()
     InitRightMFD();
     InitViperTQS();
     InitJoystick();
+
+    ResetLeds();
+    InitLEDs();
 
 }
 
