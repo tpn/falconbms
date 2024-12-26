@@ -6,8 +6,8 @@
   </detentPosition>
   <axis>
     <AxAssgn>
-      <AxisName>Roll</AxisName>
-      <AssgnDate>2021-11-02T23:45:22.9973955-07:00</AssgnDate>
+      <AxisName />
+      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>

@@ -437,7 +437,7 @@ int main()
     InitViperTQS();
     InitJoystick();
 
-    ResetLeds();
+    ResetLEDs();
     InitLEDs();
 
 }
