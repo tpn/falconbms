@@ -130,7 +130,18 @@ int InitJoystick()
     MapKey(&Joystick, STICK_PADDLE, F4BMS_PADDLE, ALL_LAYERS);
     MapKey(&Joystick, STICK_PINKY, F4BMS_PINKY, ALL_LAYERS);
     //MapKey(&Joystick, STICK_TRIGGER_1, F4BMS_TRIGGER_1, ALL_LAYERS);
+    //MapKey(&Joystick, STICK_TRIGGER_2, PULSE+F4BMS_TRIGGER_2, ALL_LAYERS);
     MapKey(&Joystick, STICK_TRIGGER_2, F4BMS_TRIGGER_2, ALL_LAYERS);
+    //MapKeyR(&Joystick, STICK_TRIGGER_2, UP+F4BMS_TRIGGER_2);
+
+	//MapKey(&Joystick, STICK_TRIGGER_2,
+	//    EXEC(
+     //   	"ActKey(KEYON+L_ALT+USB_SLASH);"   // Key press
+    //    	"while(Joystick[STICK_TRIGGER_2]) { DeferCall(10); }"
+    //    	"ActKey(KEYOFF+L_ALT+USB_SLASH);"  // Key release
+    //	)
+    //);
+    
     MapKey(&Joystick, STICK_MASTER_MODE, F4BMS_MASTER_MODE, ALL_LAYERS);
 
     MapKey(&Joystick, STICK_TMS_UP, F4BMS_TMS_UP, ALL_LAYERS);
@@ -170,12 +181,16 @@ int main()
     Configure(&TCAQBoeing34, MODE_EXCLUDED);
     Configure(&TCASidestickXPilot, MODE_EXCLUDED);
     Configure(&TCASidestickXCopilot, MODE_EXCLUDED);
-    //Configure(&ViperBBox, MODE_EXCLUDED);
     Configure(&T16000, MODE_EXCLUDED);
     Configure(&T16000L, MODE_EXCLUDED);
     Configure(&TFRPRudder, MODE_EXCLUDED);
     Configure(&TWCSThrottle, MODE_EXCLUDED);
     Configure(&TFRPHARudder, MODE_EXCLUDED);
+    
+	Configure(&Joystick, MODE_KEEPENABLED);
+	Configure(&ViperBBox, MODE_KEEPENABLED);
+	//
+	//Configure(&ViperBBox, MODE_EXCLUDED);
 
     if (Init(&EventHandle)) {
         return 1;
