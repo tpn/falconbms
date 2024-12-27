@@ -71,7 +71,7 @@
             <string>SimDoNothing</string>
           </Callback>
           <SoundID>
-            <int>0</int>
+            <int>-1</int>
             <int>0</int>
           </SoundID>
         </DirAssgn>
@@ -3484,7 +3484,7 @@
               <string>SimDoNothing</string>
             </Callback>
             <SoundID>
-              <int>0</int>
+              <int>-1</int>
               <int>0</int>
             </SoundID>
           </DirAssgn>
