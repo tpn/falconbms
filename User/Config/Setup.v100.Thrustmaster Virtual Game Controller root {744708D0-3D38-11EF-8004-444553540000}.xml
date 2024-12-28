@@ -6,15 +6,15 @@
   </detentPosition>
   <axis>
     <AxAssgn>
-      <AxisName>Roll</AxisName>
-      <AssgnDate>2024-12-25T22:06:01.0271801-08:00</AssgnDate>
+      <AxisName />
+      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
     </AxAssgn>
     <AxAssgn>
-      <AxisName>Pitch</AxisName>
-      <AssgnDate>2024-08-15T16:27:55.4641846-07:00</AssgnDate>
+      <AxisName />
+      <AssgnDate>1998-12-12T12:00:00</AssgnDate>
       <Invert>false</Invert>
       <Saturation>None</Saturation>
       <Deadzone>None</Deadzone>
