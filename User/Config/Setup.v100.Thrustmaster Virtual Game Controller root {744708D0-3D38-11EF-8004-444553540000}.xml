@@ -596,7 +596,7 @@
     <DxAssgn>
       <assign>
         <Assgn>
-          <Callback>AFBrakesToggle</Callback>
+          <Callback>AFBrakesOut</Callback>
           <Invoke>Default</Invoke>
           <SoundID>-1</SoundID>
         </Assgn>
@@ -620,7 +620,7 @@
     <DxAssgn>
       <assign>
         <Assgn>
-          <Callback>AFBrakesOut</Callback>
+          <Callback>AFBrakesToggle</Callback>
           <Invoke>Default</Invoke>
           <SoundID>-1</SoundID>
         </Assgn>
@@ -4009,7 +4009,7 @@
       <DxAssgn>
         <assign>
           <Assgn>
-            <Callback>AFBrakesToggle</Callback>
+            <Callback>AFBrakesOut</Callback>
             <Invoke>Default</Invoke>
             <SoundID>-1</SoundID>
           </Assgn>
@@ -4033,7 +4033,7 @@
       <DxAssgn>
         <assign>
           <Assgn>
-            <Callback>AFBrakesOut</Callback>
+            <Callback>AFBrakesToggle</Callback>
             <Invoke>Default</Invoke>
             <SoundID>-1</SoundID>
           </Assgn>

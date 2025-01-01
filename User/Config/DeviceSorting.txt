@@ -1,4 +1,3 @@
 {FFFF044F-0000-0000-0000-504944564944} "Thrustmaster Virtual Game Controller root"
 {076306A3-0000-0000-0000-504944564944} "Saitek Pro Flight Rudder Pedals"
-{0E45054C-0000-0000-0000-504944564944} "PlayStation VR2 Sense Controller L"
 {0402044F-0000-0000-0000-504944564944} "Joystick - HOTAS Warthog"
