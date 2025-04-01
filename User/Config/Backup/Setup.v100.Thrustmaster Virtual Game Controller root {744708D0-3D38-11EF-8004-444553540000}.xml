@@ -596,9 +596,9 @@
     <DxAssgn>
       <assign>
         <Assgn>
-          <Callback>AFBrakesOut</Callback>
+          <Callback>SimDoNothing</Callback>
           <Invoke>Default</Invoke>
-          <SoundID>-1</SoundID>
+          <SoundID>0</SoundID>
         </Assgn>
         <Assgn>
           <Callback>SimDoNothing</Callback>
@@ -620,9 +620,9 @@
     <DxAssgn>
       <assign>
         <Assgn>
-          <Callback>AFBrakesToggle</Callback>
+          <Callback>SimDoNothing</Callback>
           <Invoke>Default</Invoke>
-          <SoundID>-1</SoundID>
+          <SoundID>0</SoundID>
         </Assgn>
         <Assgn>
           <Callback>SimDoNothing</Callback>
@@ -884,9 +884,9 @@
     <DxAssgn>
       <assign>
         <Assgn>
-          <Callback>AFBrakesIn</Callback>
+          <Callback>SimDoNothing</Callback>
           <Invoke>Default</Invoke>
-          <SoundID>-1</SoundID>
+          <SoundID>0</SoundID>
         </Assgn>
         <Assgn>
           <Callback>SimDoNothing</Callback>
@@ -4009,9 +4009,9 @@
       <DxAssgn>
         <assign>
           <Assgn>
-            <Callback>AFBrakesOut</Callback>
+            <Callback>SimDoNothing</Callback>
             <Invoke>Default</Invoke>
-            <SoundID>-1</SoundID>
+            <SoundID>0</SoundID>
           </Assgn>
           <Assgn>
             <Callback>SimDoNothing</Callback>
@@ -4033,9 +4033,9 @@
       <DxAssgn>
         <assign>
           <Assgn>
-            <Callback>AFBrakesToggle</Callback>
+            <Callback>SimDoNothing</Callback>
             <Invoke>Default</Invoke>
-            <SoundID>-1</SoundID>
+            <SoundID>0</SoundID>
           </Assgn>
           <Assgn>
             <Callback>SimDoNothing</Callback>
@@ -4297,9 +4297,9 @@
       <DxAssgn>
         <assign>
           <Assgn>
-            <Callback>AFBrakesIn</Callback>
+            <Callback>SimDoNothing</Callback>
             <Invoke>Default</Invoke>
-            <SoundID>-1</SoundID>
+            <SoundID>0</SoundID>
           </Assgn>
           <Assgn>
             <Callback>SimDoNothing</Callback>
